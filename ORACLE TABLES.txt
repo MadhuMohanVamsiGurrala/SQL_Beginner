@@ -1,0 +1,150 @@
+ CREATE TABLE "DEPT" ("DEPTNO" NUMBER(2,0), "DNAME" VARCHAR2(14), "LOC" VARCHAR2(13));
+
+
+Insert into DEPT (DEPTNO,DNAME,LOC) values (10,'ACCOUNTING','NEW YORK');
+Insert into DEPT (DEPTNO,DNAME,LOC) values (20,'RESEARCH','DALLAS');
+Insert into DEPT (DEPTNO,DNAME,LOC) values (30,'SALES','CHICAGO');
+Insert into DEPT (DEPTNO,DNAME,LOC) values (40,'OPERATIONS','BOSTON');
+--------------------------------------------------------
+--  DDL for Index PK_DEPT
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "PK_DEPT" ON "DEPT" ("DEPTNO");
+
+--------------------------------------------------------
+--  Constraints for Table DEPT
+--------------------------------------------------------
+
+  ALTER TABLE "DEPT" ADD CONSTRAINT "PK_DEPT" PRIMARY KEY ("DEPTNO") ENABLE;
+
+
+
+
+
+--------------------------------------------------------
+--  DDL for Table EMP
+--------------------------------------------------------
+
+  CREATE TABLE "EMP" ("EMPNO" NUMBER(4,0), "ENAME" VARCHAR2(10), "JOB" VARCHAR2(9), "MGR" NUMBER(4,0), "HIREDATE" DATE, "SAL" NUMBER(7,2), "COMM" NUMBER(7,2), "DEPTNO" NUMBER(2,0));
+
+
+Insert into EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO) values (7369,'SMITH','CLERK',7902,to_date('17-DEC-80','DD-MON-RR'),800,null,20);
+Insert into EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO) values (7499,'ALLEN','SALESMAN',7698,to_date('20-FEB-81','DD-MON-RR'),1600,300,30);
+Insert into EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO) values (7521,'WARD','SALESMAN',7698,to_date('22-FEB-81','DD-MON-RR'),1250,500,30);
+Insert into EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO) values (7566,'JONES','MANAGER',7839,to_date('02-APR-81','DD-MON-RR'),2975,null,20);
+Insert into EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO) values (7654,'MARTIN','SALESMAN',7698,to_date('28-SEP-81','DD-MON-RR'),1250,1400,30);
+Insert into EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO) values (7698,'BLAKE','MANAGER',7839,to_date('01-MAY-81','DD-MON-RR'),2850,null,30);
+Insert into EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO) values (7782,'CLARK','MANAGER',7839,to_date('09-JUN-81','DD-MON-RR'),2450,null,10);
+Insert into EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO) values (7788,'SCOTT','ANALYST',7566,to_date('19-APR-87','DD-MON-RR'),3000,null,20);
+Insert into EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO) values (7839,'KING','PRESIDENT',null,to_date('17-NOV-81','DD-MON-RR'),5000,null,10);
+Insert into EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO) values (7844,'TURNER','SALESMAN',7698,to_date('08-SEP-81','DD-MON-RR'),1500,0,30);
+Insert into EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO) values (7876,'ADAMS','CLERK',7788,to_date('23-MAY-87','DD-MON-RR'),1100,null,20);
+Insert into EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO) values (7900,'JAMES','CLERK',7698,to_date('03-DEC-81','DD-MON-RR'),950,null,30);
+Insert into EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO) values (7902,'FORD','ANALYST',7566,to_date('03-DEC-81','DD-MON-RR'),3000,null,20);
+Insert into EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO) values (7934,'MILLER','CLERK',7782,to_date('23-JAN-82','DD-MON-RR'),1300,null,10);
+--------------------------------------------------------
+--  DDL for Index PK_EMP
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "PK_EMP" ON "EMP" ("EMPNO");
+
+--------------------------------------------------------
+--  Constraints for Table EMP
+--------------------------------------------------------
+
+  ALTER TABLE "EMP" ADD CONSTRAINT "PK_EMP" PRIMARY KEY ("EMPNO") ENABLE;
+
+--------------------------------------------------------
+--  Ref Constraints for Table EMP
+--------------------------------------------------------
+
+  ALTER TABLE "EMP" ADD CONSTRAINT "FK_DEPTNO" FOREIGN KEY ("DEPTNO") REFERENCES "DEPT" ("DEPTNO") ENABLE;
+----------------------------------------------
+
+
+create table company
+(
+cmpid   varchar2(10) constraint pk_cmpid_company primary key,
+cmpname varchar2(20) constraint nn_cmpname_company not null,
+country varchar2(20) constraint nn_country_company not null
+);
+
+insert into company values('cmp1','sony','japan');
+insert into company values('cmp2','tata','india');
+insert into company values('cmp3','wipro','india');
+insert into company values('cmp4','samsung','south korea');
+
+create table product
+(
+pid      varchar2(10) constraint pk_pid_product primary key,
+pname    varchar2(20) constraint nn_pname_product not null,
+price    NUMBER(9,2)  constraint nn_price_product not null,
+mfgdt    date        constraint nn_mfgdt_product not null,
+warranty varchar2(10),
+cmpid    varchar2(10),
+constraint fk_cmpid_product foreign key(cmpid)
+references company(cmpid)
+);
+
+insert into product values
+('p1','tv',50000,to_date('2022/10/12','yyyy/mm/dd'),'3 years','cmp1');
+insert into product values
+('p25','oven',15000,to_date('2023/02/25','yyyy/mm/dd'),'4 years','cmp1');
+insert into product values
+('p2','water filter',12000,to_date('2022/10/20','yyyy/mm/dd'),'2 years','cmp2');
+insert into product values
+('p10','bt speakers',25000,to_date('2022/11/12','yyyy/mm/dd'),'2 years','cmp4');
+insert into product values
+('p20','baby shampoo',345,to_date('2023/05/24','yyyy/mm/dd'),'1 year','cmp3');
+insert into product values
+('p11','soap',68,to_date('2023/04/23','yyyy/mm/dd'),'6 months','cmp3');
+insert into product values
+('p22','ac',45000,to_date('2022/12/26','yyyy/mm/dd'),'10 years','cmp4');
+insert into product values
+('p5','ac',40000,to_date('2023/01/01','yyyy/mm/dd'),'5 years','cmp2');
+insert into product values
+('p15','laptop',65000,to_date('2023/03/10','yyyy/mm/dd'),'1 year','cmp4');
+insert into product values
+('p3','oled tv',99000,to_date('2022/12/19','yyyy/mm/dd'),'3 years','cmp1');
+
+
+create table customers
+(
+cid  varchar2(10) constraint pk_cid_customers primary key,
+cname  varchar2(14) constraint nn_cname_customers not null,
+phno  NUMBER(10)  constraint uk_phno_customers unique
+);
+insert into customers values('c101','harini',8900189001);
+insert into customers values('c201','ajay',9800198001);
+insert into customers values('c110','uday',7890178901);
+insert into customers values('c1','deva',8988089880);
+insert into customers values('c10','isha',8979695949);
+insert into customers values('c2','teja',8000980009);
+insert into customers values('c12','vijay',null);
+insert into customers values('c4','jay',null);
+insert into customers values('c3','arya',7890178902);
+
+
+create table orders
+(
+orderno    NUMBER(10) constraint pk_orderno_orders primary key,
+orderdt    date   constraint nn_orderdt_orders not null,
+qty        NUMBER(4)    constraint nn_qty_orders not null,
+payment    NUMBER(9,2)  constraint nn_pay_orders not null,
+cid        varchar2(10),
+pid        varchar2(10),
+constraint fk_cid_orders foreign key(cid) 
+references customers(cid),
+constraint fk_pid_orders foreign key(pid)
+references product(pid)
+);
+
+
+insert into orders values
+(10200111,sysdate-5,1,12000,'c101','p2');
+insert into orders values
+(10200125,sysdate-2,1,50000,'c201','p1');
+insert into orders values
+(10200110,sysdate,1,25000,'c110','p10');
+insert into orders values
+(10200001,sysdate-10,1,65000,'c110','p15');
